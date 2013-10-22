@@ -1,0 +1,7 @@
+#pragma once
+#ifndef CTSCO_BASE
+#define CTSCO_BASE
+
+#include <common\CTSvrClntObject.h>
+
+#endif

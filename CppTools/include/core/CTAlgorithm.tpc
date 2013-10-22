@@ -1,0 +1,103 @@
+namespace CppTools
+{
+	namespace CTAlgorithm
+	{
+		template <typename Tx>
+		CppTools::CTData::CTMaxMin<Tx> FindMaxMin(const Tx* data, const CTSize_t num)
+		{
+			if(num <= 0)
+				throw CppTools::CTException::CTDataException::CTDataExceptionBase();
+			if(!data)
+				throw CppTools::CTException::CTMemoryException::CTMemoryExceptionBase();
+			CppTools::CTData::CTMaxMin<Tx> _ret_data;
+			_ret_data.max = _ret_data.min = data[0];
+			for(int i = 1; i < num; ++i)
+			{
+				if(data[i] > _ret_data.max)
+					_ret_data.max = data[i];
+				if(data[i] < _ret_data.min)
+					_ret_data.min = data[i];
+			}
+			return _ret_data;			
+		}
+
+		template <typename Tx>
+		Tx FindMax(const Tx* data, const CTSize_t num)
+		{
+			if(num <= 0)
+				throw CppTools::CTException::CTDataException::CTDataExceptionBase();
+			if(!data)
+				throw CppTools::CTException::CTMemoryException::CTMemoryExceptionBase();
+			Tx _ret_data;
+			_ret_data = data[0];
+			for(int i = 1; i < num; ++i)
+			{
+				if(data[i] > _ret_data)
+					_ret_data = data[i];
+			}
+			return _ret_data;			
+		}
+
+		template <typename Tx>
+		Tx FindMin(const Tx* data, const CTSize_t num)
+		{
+			if(num <= 0)
+				throw CppTools::CTException::CTDataException::CTDataExceptionBase();
+			if(!data)
+				throw CppTools::CTException::CTMemoryException::CTMemoryExceptionBase();
+			Tx _ret_data;
+			_ret_data = data[0];
+			for(int i = 1; i < num; ++i)
+			{
+				if(data[i] < _ret_data)
+					_ret_data = data[i];
+			}
+			return _ret_data;			
+		}
+
+		template <typename Tx>
+		void Uniform(const Tx* data, const CTSize_t num)
+		{
+			if(num <= 0)
+				throw CppTools::CTException::CTDataException::CTDataExceptionBase();
+			if(!data)
+				throw CppTools::CTException::CTMemoryException::CTMemoryExceptionBase();
+			CppTools::CTData::CTMaxMin<Tx> _maxmin = FindMaxMin<Tx>(data, num);
+			Tx len = _maxmin.max - _maxmin.min;
+			for(int i = 0;i < num; ++i)
+			{
+				data[i] = (data[i] - _maxmin.min) / len;
+			}			
+		}
+
+		template <typename Tx>
+		void Uniform(const Tx* src_data, Tx* des_data, const CTSize_t num, const CTSize_t des_repeat)
+		{
+			if(num <= 0)
+				throw CppTools::CTException::CTDataException::CTDataExceptionBase();
+			if(!src_data)
+				throw CppTools::CTException::CTMemoryException::CTMemoryExceptionBase();
+			if(!des_data)
+				throw CppTools::CTException::CTMemoryException::CTMemoryExceptionBase();
+			if(des_repeat <= 0)
+				throw CppTools::CTException::CTDataException::CTDataExceptionBase();
+			CppTools::CTData::CTMaxMin<Tx> _maxmin = FindMaxMin<Tx>(src_data, num);
+			Tx len = _maxmin.max - _maxmin.min;
+			for(int i = 0;i < num; ++i)
+			{
+				if(des_repeat == 1)
+				{
+					des_data[i] = (src_data[i] - _maxmin.min) / len;
+				}
+				else
+				{
+					Tx t = (src_data[i] - _maxmin.min) / len;
+					for(int j = 0; j < des_repeat; ++j)
+					{
+						des_data[i * des_repeat + j] = t;
+					}
+				}
+			}			
+		}
+	}
+}

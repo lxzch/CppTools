@@ -1,0 +1,7 @@
+#pragma once
+#ifndef CTG_BASE
+#define CTG_BASE
+
+#include <core\CTGeographic.h>
+
+#endif

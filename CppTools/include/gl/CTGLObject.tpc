@@ -1,0 +1,664 @@
+//CTGLObject2
+template <typename Tx>
+void CppTools::CTGL::CTGLObject2<Tx>::draw() const
+{
+}
+
+template <typename Tx>
+bool CppTools::CTGL::CTGLObject2<Tx>::moved(Tx x,
+										   Tx y)
+{
+	return false;
+}
+
+template <typename Tx>
+bool CppTools::CTGL::CTGLObject2<Tx>::clicked(Tx x,
+											 Tx y)
+{
+	return false;
+}
+
+template <typename Tx>
+bool CppTools::CTGL::CTGLObject2<Tx>::released()
+{
+	return true;
+}
+
+template <typename Tx>
+void CppTools::CTGL::CTGLObject2<Tx>::reset()
+{	
+}
+
+template <typename Tx>
+void CppTools::CTGL::CTGLObject2<Tx>::clear()
+{	
+}
+
+template <typename Tx>
+void CppTools::CTGL::CTGLObject2<Tx>::setMoveFlag(bool flag) { move = flag; }
+
+template <typename Tx>
+bool CppTools::CTGL::CTGLObject2<Tx>::getMoveFlag() const { return move; }
+
+template <typename Tx>
+void CppTools::CTGL::CTGLObject2<Tx>::setClickFlag(bool flag) { click = flag; }
+
+template <typename Tx>
+bool CppTools::CTGL::CTGLObject2<Tx>::getClickFlag() const { return click; }
+
+//CTGLObject3
+template <typename Tx>
+void CppTools::CTGL::CTGLObject3<Tx>::draw() const
+{
+}
+
+template <typename Tx>
+bool CppTools::CTGL::CTGLObject3<Tx>::moved(Tx x,
+										   Tx y)
+{
+	return false;
+}
+
+template <typename Tx>
+bool CppTools::CTGL::CTGLObject3<Tx>::clicked(Tx x,
+											 Tx y)
+{
+	return false;
+}
+
+template <typename Tx>
+bool CppTools::CTGL::CTGLObject3<Tx>::released()
+{
+	return true;
+}
+
+template <typename Tx>
+void CppTools::CTGL::CTGLObject3<Tx>::reset()
+{
+}
+
+//CTGLIamge2 - 图片工具
+//设置/返回绘图区域 和 纹理号
+template <typename Tx>
+CppTools::CTGL::CTGLImage2<Tx>::CTGLImage2()
+: draw_rect(0, 0, 0, 0), texture_rect(0, 0, 0, 0), id(0), is_auto_created(false)
+{
+}
+
+template <typename Tx>
+CppTools::CTGL::CTGLImage2<Tx>::CTGLImage2(const CppTools::CTData::CTRect2<Tx> &draw_rect,
+										   const CppTools::CTData::CTRect2<Tx> &texture_rect,
+										   const CTTexture2d id)
+: draw_rect(draw_rect), texture_rect(texture_rect), id(id), is_auto_created(false)
+{
+}
+
+template <typename Tx>
+CppTools::CTGL::CTGLImage2<Tx>::CTGLImage2(const CppTools::CTData::CTRect2<Tx> &draw_rect,
+										   const CppTools::CTData::CTRect2<Tx> &texture_rect,
+										   const std::string& filename)
+: draw_rect(draw_rect), texture_rect(texture_rect), id(id), is_auto_created(true)
+{
+}
+
+template <typename Tx>
+CppTools::CTGL::CTGLImage2<Tx>::~CTGLImage2()
+{
+	if(is_auto_created)
+	{
+		DelTexture(id);
+	}
+}
+
+template <typename Tx>
+void CppTools::CTGL::CTGLImage2<Tx>::draw() const
+{
+	if(id)
+	{
+		CTGL2d::Draw(draw_rect, texture_rect, id);
+	}
+}
+
+//CTGLIamge2内联函数
+
+template <typename Tx>
+void CppTools::CTGL::CTGLImage2<Tx>::setTexture(CTTexture2d id) { if(is_auto_created) DelTexture(this->id); this->id = id; is_auto_created = false; }
+
+template <typename Tx>
+void CppTools::CTGL::CTGLImage2<Tx>::setTexture(const std::string& filename) { if(is_auto_created) DelTexture(id); id = ReadTexture2d(filename); is_auto_created = true; }
+
+template <typename Tx>
+CTTexture2d CppTools::CTGL::CTGLImage2<Tx>::getTexture() const { if(!is_auto_created) return id; else return 0; }
+
+template <typename Tx>
+void CppTools::CTGL::CTGLImage2<Tx>::setDrawRect(rect2& rect) { this->draw_rect = rect; }
+
+template <typename Tx>
+typename CppTools::CTGL::CTGLImage2<Tx>::rect2 CppTools::CTGL::CTGLImage2<Tx>::getDrawRect() const { return draw_rect; }
+
+template <typename Tx>
+void CppTools::CTGL::CTGLImage2<Tx>::setTextureRect(rect2& rect) { this->texture_rect = rect; }
+
+template <typename Tx>
+typename CppTools::CTGL::CTGLImage2<Tx>::rect2 CppTools::CTGL::CTGLImage2<Tx>::getTextureRect() const { return texture_rect; }
+
+//CTGLButton2 - 2维按钮工具
+//设置/返回绘图区域
+
+template <typename Tx>
+CppTools::CTGL::CTGLButton2<Tx>::CTGLButton2()
+: draw_rect(0, 0, 0, 0), standi(new CTGLImage2<Tx>()), movei(new CTGLImage2<Tx>()), clicki(new CTGLImage2<Tx>()), move_func(NULL), click_func(NULL), is_auto_created(true), CTGLObject2(false, false)
+{
+}
+
+template <typename Tx>
+CppTools::CTGL::CTGLButton2<Tx>::CTGLButton2(const CppTools::CTData::CTRect2<Tx> &draw_rect,
+											 const CppTools::CTData::CTRect2<Tx> &stand_rect,
+											 const CTTexture2d stand_id)
+: standi(new CTGLImage2<Tx>(draw_rect, stand_rect, stand_id)),
+movei(new CTGLImage2<Tx>()),
+clicki(new CTGLImage2<Tx>()),
+move_func(NULL),
+click_func(NULL),
+is_auto_created(true),
+CTGLObject2(false, false)
+{
+}
+
+template <typename Tx>
+CppTools::CTGL::CTGLButton2<Tx>::CTGLButton2(CTGLImage2<Tx>* standi,
+											 CTGLImage2<Tx>* movei,
+											 CTGLImage2<Tx>* clicki)
+: standi(standi), movei(movei), clicki(clicki), is_auto_created(false), CTGLObject2(false, false)
+{
+}
+
+template <typename Tx>
+CppTools::CTGL::CTGLButton2<Tx>::~CTGLButton2()
+{
+	clear();
+}
+
+template <typename Tx>
+bool CppTools::CTGL::CTGLButton2<Tx>::isMove(Tx x,
+											 Tx y)
+{
+	if(x > draw_rect.left.x && x < draw_rect.right.x && y > draw_rect.right.y && y < draw_rect.left.y)
+	{
+		move = true;
+		click = false;
+		return true;
+	}
+	move = false;
+	click = false;
+	return false;
+}
+
+template <typename Tx>
+bool CppTools::CTGL::CTGLButton2<Tx>::moved(Tx x,
+											Tx y)
+{
+	if(isMove(x, y))
+	{
+		draw();
+		if(move_func)
+			(*move_func)();
+		return true;
+	}
+	else
+		return false;
+}
+
+template <typename Tx>
+bool CppTools::CTGL::CTGLButton2<Tx>::clicked(Tx x,
+											  Tx y)
+{
+	if(isMove(x, y))
+	{
+		click = true;
+		draw();
+		if(click_func)
+			(*click_func)();
+		return true;
+	}
+	else
+		return false;
+}
+
+template <typename Tx>
+bool CppTools::CTGL::CTGLButton2<Tx>::released()
+{
+	click = false;
+	draw();
+	return true;
+}
+
+template <typename Tx>
+void CppTools::CTGL::CTGLButton2<Tx>::draw() const
+{
+	if(click)
+	{
+		clicki->draw();
+	}
+	else if(move)
+	{
+		movei->draw();
+	}
+	else
+	{
+		standi->draw();
+	}
+}
+
+template <typename Tx>
+void CppTools::CTGL::CTGLButton2<Tx>::clear()
+{
+	if(is_auto_created)
+	{
+		delete standi;		standi = NULL;
+		delete movei;		movei = NULL;
+		delete clicki;		clicki = NULL;
+	}
+}
+
+template <typename Tx>
+void CppTools::CTGL::CTGLButton2<Tx>::reset()
+{
+	move = false;
+	click = false;
+}
+
+//CTGLButton2内联函数
+
+template <typename Tx>
+void CppTools::CTGL::CTGLButton2<Tx>::setDrawRect(rect2& rect) { this->draw_rect = rect; standi->setDrawRect(draw_rect); movei->setDrawRect(draw_rect); clicki->setDrawRect(draw_rect);}
+
+template <typename Tx>
+typename CppTools::CTGL::CTGLObject2<Tx>::rect2 CppTools::CTGL::CTGLButton2<Tx>::getDrawRect() const { return draw_rect; }
+
+template <typename Tx>
+void CppTools::CTGL::CTGLButton2<Tx>::resetDrawRect() { stand->setDrawRect(draw_rect); move->setDrawRect(draw_rect); click->setDrawRect(draw_rect); }
+
+//设置/返回静态绘图纹理和纹理坐标
+template <typename Tx>
+void CppTools::CTGL::CTGLButton2<Tx>::setStand(CTGLImage2<Tx>* image) { clear(); standi = image; is_auto_created = false; }
+
+template <typename Tx>
+CppTools::CTGL::CTGLImage2<Tx> CppTools::CTGL::CTGLButton2<Tx>::getStand() const { if(!is_auto_created) return *standi; else return NULL; }
+
+template <typename Tx>
+void CppTools::CTGL::CTGLButton2<Tx>::setStand(rect2& texture_rect, CTTexture2d stand_id) { standi->setDrawRect(draw_rect); standi->setTextureRect(texture_rect); standi->setTexture(stand_id); }
+
+template <typename Tx>
+void CppTools::CTGL::CTGLButton2<Tx>::setStandTexture(CTTexture2d stand_id) { standi->setTexture(stand_id); }
+
+template <typename Tx>
+void CppTools::CTGL::CTGLButton2<Tx>::setStandTexture(const std::string& filename) { standi->setTexture(filename); }
+
+template <typename Tx>
+CTTexture2d CppTools::CTGL::CTGLButton2<Tx>::getStandTexture() const { return standi->getTexture(); }
+
+template <typename Tx>
+void CppTools::CTGL::CTGLButton2<Tx>::setStandRect(rect2& stand_rect) { standi->setDrawRect(draw_rect); standi->setTextureRect(stand_rect); }
+
+template <typename Tx>
+typename CppTools::CTGL::CTGLObject2<Tx>::rect2 CppTools::CTGL::CTGLButton2<Tx>::getStandRect() const { return standi->getTextureRect(); }
+
+//设置/返回鼠标经过时绘图纹理和纹理坐标
+template <typename Tx>
+void CppTools::CTGL::CTGLButton2<Tx>::setMove(CTGLImage2<Tx>* image, CTGLObjectEvent event_func) { clear(); movei = image; is_auto_created = false; move_func = event_func;}
+
+template <typename Tx>
+CppTools::CTGL::CTGLImage2<Tx> CppTools::CTGL::CTGLButton2<Tx>::getMove() const { if(!is_auto_created) return *movei; else return NULL; }
+
+template <typename Tx>
+void CppTools::CTGL::CTGLButton2<Tx>::setMove(rect2& texture_rect, CTTexture2d id, CTGLObjectEvent event_func) { movei->setDrawRect(draw_rect); movei->setTextureRect(texture_rect); movei->setTexture(id); move_func = event_func; }
+
+template <typename Tx>
+void CppTools::CTGL::CTGLButton2<Tx>::setMoveTexture(CTTexture2d move_id) { movei->setTexture(move_id); }
+
+template <typename Tx>
+void CppTools::CTGL::CTGLButton2<Tx>::setMoveTexture(const std::string& filename) { movei->setTexture(filename); }
+
+template <typename Tx>
+CTTexture2d CppTools::CTGL::CTGLButton2<Tx>::getMoveTexture() const { return movei->getTexture(); }
+
+template <typename Tx>
+void CppTools::CTGL::CTGLButton2<Tx>::setMoveRect(rect2& move_rect) { movei->setDrawRect(draw_rect); movei->setTextureRect(move_rect); }
+
+template <typename Tx>
+typename CppTools::CTGL::CTGLButton2<Tx>::rect2 CppTools::CTGL::CTGLButton2<Tx>::getMoveRect() const { return movei->getTextureRect(); }
+
+template <typename Tx>
+void CppTools::CTGL::CTGLButton2<Tx>::setMoveEvent(CTGLObjectEvent event_func) { move_func = event_func; }
+
+template <typename Tx>
+CTGLObjectEvent CppTools::CTGL::CTGLButton2<Tx>::getMoveEvent() const { return move_func; }
+
+//设置/返回点击点击时绘图纹理和纹理坐标
+template <typename Tx>
+void CppTools::CTGL::CTGLButton2<Tx>::setClick(CTGLImage2<Tx>* image, CTGLObjectEvent event_func) { clear(); clicki = layer; is_created_auto = false; click_func = event_func;}
+
+template <typename Tx>
+CppTools::CTGL::CTGLImage2<Tx> CppTools::CTGL::CTGLButton2<Tx>::getClick() const { if(!is_auto_created) return *clicki; else return NULL; }
+
+template <typename Tx>
+void CppTools::CTGL::CTGLButton2<Tx>::setClick(rect2& click_rect, CTTexture2d id, CTGLObjectEvent event_func) { clicki->setDrawRect(draw_rect); clicki->setTextureRect(click_rect); clicki->setTexture(id); click_func = event_func; }
+
+template <typename Tx>
+void CppTools::CTGL::CTGLButton2<Tx>::setClickTexture(CTTexture2d click_id) { clicki->setTexture(click_id); }
+
+template <typename Tx>
+void CppTools::CTGL::CTGLButton2<Tx>::setClickTexture(const std::string& filename) { clicki->setTexture(filename); }
+
+template <typename Tx>
+CTTexture2d CppTools::CTGL::CTGLButton2<Tx>::getClickTexture() const { return clicki->getTexture(); }
+
+template <typename Tx>
+void CppTools::CTGL::CTGLButton2<Tx>::setClickRect(rect2& click_rect) { clicki->setDrawRect(draw_rect); clicki->setTextureRect(click_rect); }
+
+template <typename Tx>
+typename CppTools::CTGL::CTGLButton2<Tx>::rect2 CppTools::CTGL::CTGLButton2<Tx>::getClickRect() const { return clicki->getTextureRect(); }
+
+template <typename Tx>
+void CppTools::CTGL::CTGLButton2<Tx>::setClickEvent(CTGLObjectEvent event_func) { click_func = event_func; }
+
+template <typename Tx>
+CTGLObjectEvent CppTools::CTGL::CTGLButton2<Tx>::getClickEvent() const { return click_func; }
+
+//CTGLObject2Manager - 2维物件管理工具
+
+template <typename Tx>
+CppTools::CTGL::CTGLObject2Manager<Tx>::CTGLObject2Manager()
+{
+}
+
+template <typename Tx>
+CppTools::CTGL::CTGLObject2Manager<Tx>::~CTGLObject2Manager()
+{
+}
+
+template <typename Tx>
+void CppTools::CTGL::CTGLObject2Manager<Tx>::draw() const
+{
+	p_obj2::const_iterator i, bg = obj_list.begin(), ed = obj_list.end();
+	for(i = bg; i != ed; ++i)
+	{
+		(*i)->draw();
+	}
+}
+
+template <typename Tx>
+bool CppTools::CTGL::CTGLObject2Manager<Tx>::moved(Tx x, Tx y)
+{
+	p_obj2::const_reverse_iterator i;
+	for(i = obj_list.rbegin(); i != obj_list.rend(); ++i)
+	{
+		if((*i)->moved(x, y))
+		{			
+			reset();
+			(*i)->setMoveFlag(true);
+			draw();
+			return true;
+		}
+	}
+	return false;
+}
+
+template <typename Tx>
+bool CppTools::CTGL::CTGLObject2Manager<Tx>::clicked(Tx x, Tx y)
+{
+	p_obj2::const_reverse_iterator i;
+	for(i = obj_list.rbegin(); i != obj_list.rend(); ++i)
+	{		
+		if((*i)->clicked(x, y))
+		{
+			return true;
+		}
+	}
+	return false;
+}
+
+template <typename Tx>
+bool CppTools::CTGL::CTGLObject2Manager<Tx>::released()
+{
+	p_obj2::const_reverse_iterator i;
+	for(i = obj_list.rbegin(); i != obj_list.rend(); ++i)
+	{
+		(*i)->released();
+	}
+	return true;
+}
+
+template <typename Tx>
+void CppTools::CTGL::CTGLObject2Manager<Tx>::reset()
+{
+	p_obj2::const_iterator i, bg = obj_list.begin(), ed = obj_list.end();
+	for(i = bg; i != ed; ++i)
+	{
+		(*i)->reset();
+	}
+}
+
+//CTGLObject2Manager内联函数
+
+template <typename Tx>
+void CppTools::CTGL::CTGLObject2Manager<Tx>::push_front(CppTools::CTGL::CTGLObject2<Tx>* obj) { obj_list.push_front(obj); }
+
+template <typename Tx>
+void CppTools::CTGL::CTGLObject2Manager<Tx>::pop_front() { obj_list.pop_front(); }
+
+template <typename Tx>
+void CppTools::CTGL::CTGLObject2Manager<Tx>::push_back(CppTools::CTGL::CTGLObject2<Tx>* obj) { obj_list.push_back(obj); }
+
+template <typename Tx>
+void CppTools::CTGL::CTGLObject2Manager<Tx>::pop_back() { obj_list.pop_back(); }
+
+template <typename Tx>
+void CppTools::CTGL::CTGLObject2Manager<Tx>::clear() { obj_list.clear(); }
+
+//CTGLMenu2
+
+template <typename Tx>
+CppTools::CTGL::CTGLMenu2<Tx>::CTGLMenu2()
+: style(vertical), interval(0.1), position(0, 0), draw_rect(-0.5, 0.5, 0.5, -0.5), num(0), static_rect(0.0, 0.0, 1.0, 0.333), move_rect(0.0, 0.333, 1.0, 0.666), click_rect(0.0, 0.666, 1.0, 1.0)
+{
+	static_rect = SetRect(0.0f, 0.0f, 1.0f, 0.333f);
+	move_rect = SetRect(0.0f, 0.333f, 1.0f, 0.666f);
+	click_rect = SetRect(0.0f, 0.666f, 1.0f, 1.0f);
+}
+
+template <typename Tx>
+CppTools::CTGL::CTGLMenu2<Tx>::~CTGLMenu2()
+{
+	p_button2::iterator i, bg = obj_list.begin(), ed = obj_list.end();
+	for(i = bg; i != ed; ++i)
+	{
+		delete (*i);
+	}
+}
+
+template <typename Tx>
+void CppTools::CTGL::CTGLMenu2<Tx>::draw() const
+{
+	p_button2::const_iterator i, bg = obj_list.begin(), ed = obj_list.end();
+	for(i = bg; i != ed; ++i)
+	{
+		(*i)->draw();
+	}
+}
+
+template <typename Tx>
+bool CppTools::CTGL::CTGLMenu2<Tx>::moved(Tx x, Tx y)
+{
+	p_button2::const_reverse_iterator i;
+	for(i = obj_list.rbegin(); i != obj_list.rend(); ++i)
+	{
+		if((*i)->moved(x, y))
+		{			
+			reset();
+			(*i)->setMoveFlag(true);
+			draw();
+			return true;
+		}
+	}
+	return false;
+}
+
+template <typename Tx>
+bool CppTools::CTGL::CTGLMenu2<Tx>::clicked(Tx x, Tx y)
+{
+	p_button2::const_reverse_iterator i;
+	for(i = obj_list.rbegin(); i != obj_list.rend(); ++i)
+	{		
+		if((*i)->clicked(x, y))
+		{
+			return true;
+		}
+	}
+	return false;
+}
+
+template <typename Tx>
+bool CppTools::CTGL::CTGLMenu2<Tx>::released()
+{
+	p_button2::const_reverse_iterator i;
+	for(i = obj_list.rbegin(); i != obj_list.rend(); ++i)
+	{
+		(*i)->released();
+	}
+	return true;
+}
+
+template <typename Tx>
+void CppTools::CTGL::CTGLMenu2<Tx>::reset()
+{
+	p_button2::const_iterator i, bg = obj_list.begin(), ed = obj_list.end();
+	for(i = bg; i != ed; ++i)
+	{
+		(*i)->reset();
+	}
+}
+
+template <typename Tx>
+CTGLHandle CppTools::CTGL::CTGLMenu2<Tx>::addButton(CTTexture2d stand_id,
+													CTTexture2d move_id,
+													CTTexture2d click_id,
+													CTGLObjectEvent move_event,
+													CTGLObjectEvent click_event)
+{
+	button2_t* p_t = new button2_t();
+	p_t->setStand(static_rect, stand_id);
+	if(!move_id)
+		p_t->setMove(move_rect, stand_id);
+	else
+		p_t->setMove(move_rect, move_id);
+	if(!click_id)
+		p_t->setClick(click_rect, stand_id);
+	else
+		p_t->setClick(click_rect, click_id);
+	p_t->setMoveEvent(move_event);
+	p_t->setClickEvent(click_event);
+	this->push_back(p_t);
+	++num;
+	update();
+	return num;
+}
+
+template <typename Tx>
+void CppTools::CTGL::CTGLMenu2<Tx>::deleteButton(CTGLHandle hbutton)
+{
+	p_button2::const_iterator i = obj_list.begin();
+	for(CTGLHandle j = 0; j < hbutton; ++j)
+		++i;
+	obj_list.erase(i);
+	--num;
+}
+
+template <typename Tx>
+CppTools::CTGL::CTGLButton2<Tx>* CppTools::CTGL::CTGLMenu2<Tx>::button(CTGLHandle hbutton)
+{
+	p_button2::iterator i = obj_list.begin();
+	for(CTGLHandle j = 1; j < hbutton; ++j)
+		++i;
+	return (*i);
+}
+
+template <typename Tx>
+void CppTools::CTGL::CTGLMenu2<Tx>::update()
+{
+	p_button2::iterator i, bg = obj_list.begin(), ed = obj_list.end();
+	rect2 t_rect;
+	int j = 0;	
+	if(style == vertical)
+	{
+		Tx dy = size.height / (Tx)num;
+		t_rect.left.x = position.x;
+		t_rect.left.y = position.y;
+		t_rect.right.x = position.x + size.width;
+		t_rect.right.y = position.y - dy;
+		for(i = bg; i != ed; ++i)
+		{
+			(*i)->setDrawRect(t_rect);
+			t_rect.left.y -= dy + interval;
+			t_rect.right.y -= dy + interval;
+		}
+	}
+	else if(style == horizontal)
+	{
+		Tx dx = size.width / (Tx)num;
+		t_rect.left.x = position.x;
+		t_rect.left.y = position.y;
+		t_rect.right.x = position.x + dx;
+		t_rect.right.y = position.y - size.height;
+		for(i = bg; i != ed; ++i)
+		{
+			(*i)->setDrawRect(t_rect);
+			t_rect.left.x += dx + interval;
+			t_rect.right.x += dx + interval;
+		}
+	}
+	++j;
+}
+
+
+//CTGLMenu2内联函数
+
+template <typename Tx>
+void CppTools::CTGL::CTGLMenu2<Tx>::setDrawStyle(arrange_style style) { this->style = style; }
+
+template <typename Tx>
+typename CppTools::CTGL::CTGLMenu2<Tx>::arrange_style CppTools::CTGL::CTGLMenu2<Tx>::getDrawStyle() const { return this->style; }
+
+template <typename Tx>
+void CppTools::CTGL::CTGLMenu2<Tx>::setInterval(Tx interval) { this->interval = interval; }
+
+template <typename Tx>
+Tx CppTools::CTGL::CTGLMenu2<Tx>::getInterval() const { return this->interval; }
+
+template <typename Tx>
+void CppTools::CTGL::CTGLMenu2<Tx>::setPosition(point2& position) { this->position = position; }
+
+template <typename Tx>
+typename CppTools::CTGL::CTGLMenu2<Tx>::point2 CppTools::CTGL::CTGLMenu2<Tx>::getPosition() const { return this->position; }
+
+template <typename Tx>
+void CppTools::CTGL::CTGLMenu2<Tx>::setScale(size2& size) { this->size = size; this->draw_rect = CppTools::CTGL::SetRect(position.x, position.y, position.x + size.width, position.y + size.height); }
+
+template <typename Tx>
+typename CppTools::CTGL::CTGLMenu2<Tx>::size2 CppTools::CTGL::CTGLMenu2<Tx>::getScale() const { return this->size; }
+
+template <typename Tx>
+void CppTools::CTGL::CTGLMenu2<Tx>::push_front(CppTools::CTGL::CTGLButton2<Tx>* obj) { obj_list.push_front(obj); }
+
+template <typename Tx>
+void CppTools::CTGL::CTGLMenu2<Tx>::pop_front() { obj_list.pop_front(); }
+
+template <typename Tx>
+void CppTools::CTGL::CTGLMenu2<Tx>::push_back(CppTools::CTGL::CTGLButton2<Tx>* obj) { obj_list.push_back(obj); }
+
+template <typename Tx>
+void CppTools::CTGL::CTGLMenu2<Tx>::pop_back() { obj_list.pop_back(); }
+
+template <typename Tx>
+void CppTools::CTGL::CTGLMenu2<Tx>::clear() { obj_list.clear(); }

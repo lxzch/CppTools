@@ -1,0 +1,9 @@
+#pragma once
+#ifndef CTALGORITHM_BASE
+#define CTALGORITHM_BASE
+
+#include <CTMath>
+#include <core\CTAlgorithm.h>
+#include <core\CTPartition.h>
+
+#endif

@@ -1,0 +1,7 @@
+#pragma once
+#ifndef CTGLOBJECT_BASE
+#define CTGLOBJECT_BASE
+
+#inlcude <gl\CTGLUT.h>
+
+#endif

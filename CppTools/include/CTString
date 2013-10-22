@@ -1,0 +1,7 @@
+#pragma once
+#ifndef CTSTR_BASE
+#define CTSTR_BASE
+
+#include <core\CTString.h>
+
+#endif

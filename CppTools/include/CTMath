@@ -1,0 +1,8 @@
+#pragma once
+#ifndef CTMATH_BASE
+#define CTMATH_BASE
+
+#include <CTBase>
+#include <core\CTMath.h>
+
+#endif

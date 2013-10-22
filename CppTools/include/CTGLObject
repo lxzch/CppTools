@@ -1,0 +1,7 @@
+#pragma once
+#ifndef CTGLOBJECT_BASE
+#define CTGLOBJECT_BASE
+
+#include <gl\CTGLObject.h>
+
+#endif

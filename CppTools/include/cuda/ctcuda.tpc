@@ -1,0 +1,59 @@
+template <typename Tx>
+void CppTools::CTCuda::CTCudaAct<Tx>::init()
+{
+	cudaError_t err = cudaSetDevice(cutGetMaxGflopsDeviceId());
+	if (err != CUDA_SUCCESS)
+		throw CppTools::CTException::CTCudaException::CTCudaErrSetDevice(err, __FILE__, (int)__LINE__);
+}
+
+template <typename Tx>
+void CppTools::CTCuda::CTCudaAct<Tx>::malloc(void** devPtr, size_t size)
+{
+	cudaError_t err = cudaMalloc(devPtr, size);
+	if (err != CUDA_SUCCESS)
+		throw CppTools::CTException::CTCudaException::CTCudaErrMemory(err, __FILE__, (int)__LINE__);
+}
+
+template <typename Tx>
+Tx* CppTools::CTCuda::CTCudaAct<Tx>::malloc(const size_t number)
+{
+	Tx* devPtr;
+	malloc(reinterpret_cast<void**>(&devPtr), number * sizeof(Tx));
+	return static_cast<Tx*>(devPtr);
+}
+
+template <typename Tx>
+void CppTools::CTCuda::CTCudaAct<Tx>::free(Tx* devPtr)
+{
+	cudaError_t err = cudaFree(devPtr);
+	if (err != CUDA_SUCCESS)
+		throw CppTools::CTException::CTCudaException::CTCudaErrMemory(err, __FILE__, (int)__LINE__);
+}
+
+template <typename Tx>
+void CppTools::CTCuda::CTCudaAct<Tx>::send(void* dst, const void* src, const size_t size)
+{
+	cudaError_t err = cudaMemcpy(dst, src, size, cda_host2d);
+	if (err != CUDA_SUCCESS)
+		throw CppTools::CTException::CTCudaException::CTCudaErrMemcpyHost2Device(err, __FILE__, (int)__LINE__);
+}
+
+template <typename Tx>
+void CppTools::CTCuda::CTCudaAct<Tx>::send(const size_t number, Tx* dst, const Tx* src)
+{
+	send(dst, src, number * sz_Tx);
+}
+
+template <typename Tx>
+void CppTools::CTCuda::CTCudaAct<Tx>::get(void* dst, const void* src, const size_t size)
+{
+	cudaError_t err = cudaMemcpy(dst, src, size, cda_device2h);
+	if (err != CUDA_SUCCESS)
+		throw CppTools::CTException::CTCudaException::CTCudaErrMemcpyDevice2Host(err, __FILE__, (int)__LINE__);
+}
+
+template <typename Tx>
+void CppTools::CTCuda::CTCudaAct<Tx>::get(const size_t number, void* dst, const void* src)
+{
+	get(dst, src, number * sz_Tx);
+}

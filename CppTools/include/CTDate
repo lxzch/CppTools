@@ -1,0 +1,7 @@
+#pragma once
+#ifndef CTDATE_BASE
+#define CTDATE_BASE
+
+#include <core\CTDate.h>
+
+#endif

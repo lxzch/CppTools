@@ -1,0 +1,10 @@
+#pragma once
+#ifndef CTMEM_BASE
+#define CTMEM_BASE
+
+#include <core\CTCMemory.h>
+#include <core\CTMemory1d.h>
+#include <core\CTMemory2d.h>
+#include <exception\CTMemoryException.h>
+
+#endif

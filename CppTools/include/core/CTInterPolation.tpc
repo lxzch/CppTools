@@ -1,0 +1,129 @@
+class _CT_EXC_FILE__ CTFileExceptionBase;
+
+template <typename Tx,
+typename Ty>
+CppTools::CTMath::CTInterPolation<Tx, Ty>::CTInterPolation(const _STD__ string& file)
+: file(NULL), data(NULL)
+{
+	if(file.size() != 0)
+	{
+		readFrom(file);
+	}
+}
+
+template <typename Tx,
+typename Ty>
+CppTools::CTMath::CTInterPolation<Tx, Ty>::~CTInterPolation()
+{
+	dispose();
+}
+
+template <typename Tx,
+typename Ty>
+Ty CppTools::CTMath::CTInterPolation<Tx, Ty>::value(Tx key)
+{
+	_map_it v = data->find(key), v_e;
+	if(v != data->end())
+	{
+		return v->second;
+	}
+	else
+	{
+		data->insert(_pair_x_y(key, mm.min));
+		v = data->find(key);
+		v_e = data->end();
+		--v_e;
+		if(v == data->begin())
+		{
+			data->erase(v);
+			return data->begin()->second;
+		}
+		else if(v == v_e)
+		{
+			data->erase(v);
+			v_e = data->end();
+			return (--v_e)->second;
+		}
+		else
+		{
+			_map_it v_upper = v, v_lower = v;
+			++v_upper;
+			--v_lower;
+			Ty k = (v_upper->second - v_lower->second) / (v_upper->first - v_lower->first), b = v_lower->second - k * v_lower->first;
+			return k * key + b;
+		}
+	}
+	data->erase(v);
+}
+
+template <typename Tx,
+typename Ty>
+void CppTools::CTMath::CTInterPolation<Tx, Ty>::readFrom(const _STD__ string &file)
+{
+	if(this->file && data)
+	{
+		dispose();
+	}
+	data = new _map();
+	this->file = new _STD__ string(file);
+	_STD__ ifstream fin;
+	fin.open(file.c_str());
+	if(!fin)
+	{
+		throw _CT_EXC_FILE__ CTFileExceptionBase(file);
+	}
+	else
+	{
+		Tx x;
+		Ty y;
+		if(!fin.eof())
+		{
+			fin>>x>>y;
+			mm.max = mm.min = x;
+			data->insert(_pair_x_y(x, y));
+		}
+		while(!fin.eof())
+		{
+			fin>>x>>y;
+			data->insert(_pair_x_y(x, y));
+			if(mm.max < x)
+			{
+				mm.max = x;
+			}
+			if(mm.min > x)
+			{
+				mm.min = x;
+			}
+		}
+	}
+	fin.close();
+}
+
+template <typename Tx,
+typename Ty>
+void CppTools::CTMath::CTInterPolation<Tx, Ty>::dispose()
+{
+	_CT__ DeleteObj(file);
+	_CT__ DeleteObj(data);
+}
+
+template <typename Tx,
+typename Ty>
+Tx CppTools::CTMath::CTInterPolation<Tx, Ty>::keyMax() const
+{
+	return mm.max;
+}
+
+template <typename Tx,
+typename Ty>
+Tx CppTools::CTMath::CTInterPolation<Tx, Ty>::keyMin() const
+{
+	return mm.min;
+}
+
+template <typename Tx,
+typename Ty>
+typename CppTools::CTMath::CTInterPolation<Tx, Ty>::_maxmin CppTools::CTMath::CTInterPolation<Tx, Ty>::maxmin() const
+{
+	return mm;
+}

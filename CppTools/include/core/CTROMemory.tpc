@@ -1,0 +1,173 @@
+//CTRefObject<_Mem1d>::_CTRO_Clnt
+template <typename Tx>
+CppTools::CTData::CTRefObject<CppTools::CTMemory::CTMemory1d<Tx> >::_CTRO_Clnt::_CTRO_Clnt()
+: _sco(NULL), _num(NULL)
+{
+	init();
+}
+
+template <typename Tx>
+CppTools::CTData::CTRefObject<CppTools::CTMemory::CTMemory1d<Tx> >::_CTRO_Clnt::~_CTRO_Clnt()
+{
+	dispose();
+}
+
+template <typename Tx>
+void CppTools::CTData::CTRefObject<CppTools::CTMemory::CTMemory1d<Tx> >::_CTRO_Clnt::init()
+{
+	_sco = new CTSvrSngClient<_Mem1d>();
+	_num = new CTInt(1);
+}
+
+template <typename Tx>
+void CppTools::CTData::CTRefObject<CppTools::CTMemory::CTMemory1d<Tx> >::_CTRO_Clnt::dispose()
+{
+	CppTools::DeleteObj(_sco);
+	CppTools::DeleteObj(_num);
+}
+
+//CTRefObject
+
+template <typename Tx>
+CppTools::CTData::CTRefObject<typename CppTools::CTMemory::CTMemory1d<Tx> >::CTRefObject(const p_Mem1d ref)
+: _roo(NULL)
+{
+	init();
+	_roo->_sco->setClient(ref);
+}
+
+template <typename Tx>
+CppTools::CTData::CTRefObject<CppTools::CTMemory::CTMemory1d<Tx> >::CTRefObject(const CTRefObject<_Mem1d>& ref)
+{
+	_roo = ref._roo;
+	++(*(_roo->_num));
+}
+
+template <typename Tx>
+CppTools::CTData::CTRefObject<CppTools::CTMemory::CTMemory1d<Tx> >::CTRefObject(const CTRefObject<_Mem1d>* ref)
+{
+	if(ref != this)
+	{
+		_roo = ref->_roo;
+		++(*(_roo->_num));
+	}
+}
+
+template <typename Tx>
+CppTools::CTData::CTRefObject<CppTools::CTMemory::CTMemory1d<Tx> >::~CTRefObject()
+{
+	dispose();
+}
+
+template <typename Tx>
+void CppTools::CTData::CTRefObject<CppTools::CTMemory::CTMemory1d<Tx> >::init()
+{
+	_roo = new _CTRO_Clnt();
+}
+
+template <typename Tx>
+void CppTools::CTData::CTRefObject<CppTools::CTMemory::CTMemory1d<Tx> >::dispose()
+{
+	if(_roo->_num->getData() <= 1)
+	{
+		CppTools::DeleteObj(_roo->_sco->getClient());
+		CppTools::DeleteObj(_roo);
+	}
+	else
+	{
+		--(*(_roo->_num));
+	}
+}
+
+template <typename Tx>
+CTSize_t CppTools::CTData::CTRefObject<CppTools::CTMemory::CTMemory1d<Tx> >::size() const
+{
+	return _roo->_num->getData();
+}
+
+template <typename Tx>
+void CppTools::CTData::CTRefObject<CppTools::CTMemory::CTMemory1d<Tx> >::setReference(p_Mem1d ref)
+{
+	if(ref != _roo->_sco->getClient())
+	{
+		dispose();
+		init();
+		_roo->_sco->setClient(ref);
+		++(*(_roo->_num));
+	}
+}
+
+template <typename Tx>
+void CppTools::CTData::CTRefObject<CppTools::CTMemory::CTMemory1d<Tx> >::setReference(const CTRefObject<CppTools::CTMemory::CTMemory1d<Tx> >& ref)
+{
+	if(_roo->_sco->getClient() != ref._roo->_sco->getClient()) 
+	{
+		dispose();
+		init();
+		_roo = ref->_roo;
+		++(*(_roo->_num));
+	}
+}
+
+template <typename Tx>
+void CppTools::CTData::CTRefObject<CppTools::CTMemory::CTMemory1d<Tx> >::setReference(const CTRefObject<CppTools::CTMemory::CTMemory1d<Tx> >* ref)
+{
+	if((ref != this) && (_roo->_sco->getClient() != ref->_roo->_sco->getClient()))
+	{
+		dispose();
+		init();
+		_roo = ref->_roo;
+		++(*(_roo->_num));
+	}
+}
+
+template <typename Tx>
+typename CppTools::CTData::CTRefObject<CppTools::CTMemory::CTMemory1d<Tx> >::p_Mem1d CppTools::CTData::CTRefObject<CppTools::CTMemory::CTMemory1d<Tx> >::getReference() const
+{
+	return _roo->_sco->getClient();
+}
+
+template <typename Tx>
+const typename CppTools::CTData::CTRefObject<CppTools::CTMemory::CTMemory1d<Tx> >::p_Mem1d CppTools::CTData::CTRefObject<CppTools::CTMemory::CTMemory1d<Tx> >::operator ->() const
+{
+	return _roo->_sco->getClient();
+}
+
+template <typename Tx>
+typename CppTools::CTData::CTRefObject<CppTools::CTMemory::CTMemory1d<Tx> >::p_Mem1d CppTools::CTData::CTRefObject<CppTools::CTMemory::CTMemory1d<Tx> >::operator ->()
+{
+	return _roo->_sco->getClient();
+}
+
+template <typename Tx>
+const typename CppTools::CTData::CTRefObject<CppTools::CTMemory::CTMemory1d<Tx> >::_Mem1d& CppTools::CTData::CTRefObject<CppTools::CTMemory::CTMemory1d<Tx> >::operator *() const
+{
+	return *(_roo->_sco->getClient());
+}
+
+template <typename Tx>
+typename CppTools::CTData::CTRefObject<CppTools::CTMemory::CTMemory1d<Tx> >::_Mem1d& CppTools::CTData::CTRefObject<CppTools::CTMemory::CTMemory1d<Tx> >::operator *()
+{
+	return *(_roo->_sco->getClient());
+}
+
+template <typename Tx>
+Tx& CppTools::CTData::CTRefObject<CppTools::CTMemory::CTMemory1d<Tx> >::operator [](const CTSize_t index)
+{
+	return getReference()->safe_data()[index];
+}
+
+template <typename Tx>
+const Tx& CppTools::CTData::CTRefObject<CppTools::CTMemory::CTMemory1d<Tx> >::operator [](const CTSize_t index) const
+{
+	return getReference()->const_data()[index];
+}
+
+template <typename Tx>
+std::ostream& CppTools::CTData::operator <<(std::ostream& oin, const CppTools::CTData::CTRefObject<CppTools::CTMemory::CTMemory1d<Tx> > obj)
+{
+	CTSize_t i;
+	for(i = 0; i < obj.getReference()->size(); ++i)
+		oin << obj.getReference()->safe_data()[i] << endl;
+	return oin;
+}

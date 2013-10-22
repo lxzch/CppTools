@@ -1,0 +1,131 @@
+template <typename Tx>
+CppTools::CTData::CTDataBase<Tx>::CTDataBase(const Tx& data)
+:data(data)
+{
+}
+
+template <typename Tx>
+CppTools::CTData::CTDataBase<Tx>::~CTDataBase()
+{
+}
+
+template <typename Tx>
+std::string CppTools::CTData::CTDataBase<Tx>::toString()
+{
+	std::stringstream ss;
+	std::string temp;
+	ss << data;
+	ss >> temp;
+	return temp;
+}
+
+template <typename Tx>
+const std::string CppTools::CTData::CTDataBase<Tx>::toString() const
+{
+	std::stringstream ss;
+	std::string temp;
+	ss << data;
+	ss >> temp;
+	return temp;
+}
+
+template <typename Tx>
+Tx CppTools::CTData::CTDataBase<Tx>::getData() const
+{
+	return data;
+}
+
+template <typename Tx>
+void CppTools::CTData::CTDataBase<Tx>::setData(const Tx& new_data)
+{
+	data = new_data;
+}
+
+template <typename Tx>
+const CppTools::CTData::CTDataBase<Tx>& CppTools::CTData::CTDataBase<Tx>::operator =(const CTDataBase& right)
+{
+	data = static_cast<Tx>(right.data);
+	return *this;
+}
+
+template <typename Tx>
+const CppTools::CTData::CTDataBase<Tx>& CppTools::CTData::CTDataBase<Tx>::operator +(const CTDataBase& right)
+{
+	data +=  static_cast<Tx>(right.data);
+	return *this;
+}
+
+template <typename Tx>
+const CppTools::CTData::CTDataBase<Tx>& CppTools::CTData::CTDataBase<Tx>::operator -(const CTDataBase& right)
+{
+	data -=  static_cast<Tx>(right.data);
+	return *this;
+}
+
+template <typename Tx>
+const CppTools::CTData::CTDataBase<Tx>& CppTools::CTData::CTDataBase<Tx>::operator *(const CTDataBase& right)
+{
+	data *=  static_cast<Tx>(right.data);
+	return *this;
+}
+
+template <typename Tx>
+const CppTools::CTData::CTDataBase<Tx>& CppTools::CTData::CTDataBase<Tx>::operator /(const CTDataBase& right)
+{
+	data /=  static_cast<Tx>(right.data);
+	return *this;
+}
+
+template <typename Tx>
+CppTools::CTData::CTDataBase<Tx>& CppTools::CTData::CTDataBase<Tx>::operator ++()
+{
+	++data;
+	return (*this);
+}
+
+template <typename Tx>
+CppTools::CTData::CTDataBase<Tx> CppTools::CTData::CTDataBase<Tx>::operator ++(int)
+{
+	CppTools::CTData::CTDataBase<Tx> tmp = *this;
+	++data;
+	return tmp;
+}
+
+template <typename Tx>
+CppTools::CTData::CTDataBase<Tx>& CppTools::CTData::CTDataBase<Tx>::operator --()
+{
+	--data;
+	return (*this);
+}
+
+template <typename Tx>
+CppTools::CTData::CTDataBase<Tx> CppTools::CTData::CTDataBase<Tx>::operator --(int)
+{
+	CppTools::CTData::CTDataBase<Tx> tmp = *this;
+	--data;
+	return tmp;
+}
+
+template <typename Tx>
+Tx CppTools::CTData::CTDataFunc<Tx>::va_arg_in(va_list* ap)
+{
+	return va_arg(*ap, Tx);
+}
+
+template <>
+char CppTools::CTData::CTDataFunc<char>::va_arg_in(va_list* ap)
+{
+	return (char)va_arg(*ap, int);
+}
+
+template <>
+short CppTools::CTData::CTDataFunc<short>::va_arg_in(va_list* ap)
+{
+	return (short)va_arg(*ap, int);
+}
+
+template <>
+float CppTools::CTData::CTDataFunc<float>::va_arg_in(va_list* ap)
+{
+	return (float)va_arg(*ap, double);
+}

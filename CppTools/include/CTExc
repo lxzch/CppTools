@@ -1,0 +1,7 @@
+#pragma once
+#ifndef CTE_BASE
+#define CTE_BASE
+
+#include <exception\CTException.h>
+
+#endif

@@ -1,0 +1,7 @@
+#pragma once
+#ifndef CTGL_BASE
+#define CTGL_BASE
+
+#include <gl\CGFunc.h>
+
+#endif

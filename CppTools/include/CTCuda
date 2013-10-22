@@ -1,0 +1,9 @@
+#ifndef CTCUDA_BASE
+#define CTCUDA_BASE
+
+#include <cuda\CTCuda.h>
+#include <cuda\CTCudaFFT.h>
+
+#define UZ_CT_CUDA using namespace CppTools::CTCuda;
+
+#endif

@@ -1,0 +1,6 @@
+#ifndef CTCUDAKITS_BASE
+#define CTCUDAKITS_BASE
+
+#include <cuda\CTCudaKits.h>
+
+#endif

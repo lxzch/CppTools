@@ -1,0 +1,7 @@
+#pragma once
+#ifndef CTBASE_BASE
+#define CTBASE_BASE
+
+#include <common\CTDefine.h>
+
+#endif

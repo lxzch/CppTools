@@ -1,0 +1,138 @@
+template<typename Tx>
+CppTools::CTMemory::CTArray1d<Tx>::CTArray1d(const int size = 0)
+: _size(size), data(newArray(size))
+{
+}
+
+template<typename Tx>
+CppTools::CTMemory::CTArray1d<Tx>::CTArray1d(const CTArray1d& _old)
+{
+	int i;
+	_size = _old.size();
+	data = NewArray1d<Tx>(_size);
+	for(i = 0; i < _size; ++i)
+		set(i, _old[i]);
+}
+
+template<typename Tx>
+CppTools::CTMemory::CTArray1d<Tx>::~CTArray1d()
+{
+	delete[] data;
+	data = NULL;
+	_size = 0;
+}
+
+template<typename Tx>
+Tx* CppTools::CTMemory::CTArray1d<Tx>::newArray(int size)
+{
+	return NewArray1d<Tx>(size);
+}
+
+template<typename Tx>
+Tx CppTools::CTMemory::CTArray1d<Tx>::get(int position) const
+{
+	if (position >= _size)
+		throw CppTools::CTException::CTMemoryException::CTArrayOutRange(position);
+	return data[position];
+}
+
+template<typename Tx>
+void CppTools::CTMemory::CTArray1d<Tx>::set(int position, Tx context)
+{
+	if (position >= _size)
+		throw CppTools::CTException::CTMemoryException::CTArrayOutRange(position);
+	data[position] = context;
+}
+
+template<typename Tx>
+int CppTools::CTMemory::CTArray1d<Tx>::size() const
+{
+	return _size;
+}
+
+template<typename Tx>
+void CppTools::CTMemory::CTArray1d<Tx>::resize(int new_size)
+{
+	if (!new_size)
+	{
+		_size = 0;
+		delete data;
+		return;
+	}
+	if (new_size == _size)
+		return;
+	int min_size;
+	min_size = Min(_size, new_size);	
+	Tx* temp = NULL;
+	temp = newArray(min_size);
+	for (int i = 0; i < min_size; ++i)
+		temp[i] = data[i];
+	delete[] data;
+	data = temp;
+	_size = new_size;
+}
+
+template<typename Tx>
+const CppTools::CTMemory::CTArray1d<Tx>& CppTools::CTMemory::CTArray1d<Tx>::operator =(const CTArray1d& right)
+{
+	if (&rifht != this)
+	{
+		if(_size != right._size)
+		{
+			delete[] data;
+			_size = right._size;
+			data = newArray(_size);
+		}
+		for(int i = 0; i < _size; ++i)
+			data[i] = right.data[i];
+	}
+	return (*this);
+}
+
+template<typename Tx>
+bool CppTools::CTMemory::CTArray1d<Tx>::operator ==(const CTArray1d& right) const
+{
+	if (_size != right._size)
+		return false;
+	for (int i = 0; i < _size; ++i)
+		if (data[i] != right.data[i])
+			return false;
+	return true;
+}
+
+template<typename Tx>
+bool CppTools::CTMemory::CTArray1d<Tx>::operator !=(const CTArray1d& right) const
+{
+	if (_size == right._size)
+	{
+		for (int i = 0; i < _size; ++i)
+			if (data[i] != right.data[i])
+				return true;
+		return false;
+	}
+	return true;
+}
+
+template<typename Tx>
+Tx& CppTools::CTMemory::CTArray1d<Tx>::operator [](int position)
+{
+	if (position >= _size)
+		throw CppTools::CTException::CTMemoryException::CTArrayOutRange(position);
+	return data[position];
+}
+
+template<typename Tx>
+const Tx& CppTools::CTMemory::CTArray1d<Tx>::operator [](int position) const
+{
+	if (position >= _size)
+		throw CppTools::CTException::CTMemoryException::CTArrayOutRange(position);
+	return data[position];
+}
+
+template<typename Tx>
+Tx& CppTools::CTMemory::CTArray1d<Tx>::operator ()(int position) const
+{
+	if (position >= _size)
+		throw CppTools::CTException::CTMemoryException::CTArrayOutRange(position);
+	return data[position];
+}

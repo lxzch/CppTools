@@ -1,0 +1,8 @@
+#pragma once
+#ifndef CTDATA_BASE
+#define CTDATA_BASE
+
+#include <core\CTData.h>
+#include <exception\CTDataException.h>
+
+#endif

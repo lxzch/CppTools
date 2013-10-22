@@ -1,0 +1,7 @@
+#pragma once
+#ifndef CTPHYSICS_BASE
+#define CTPHYSICS_BASE
+
+#include <core\CTPhysics.h>
+
+#endif

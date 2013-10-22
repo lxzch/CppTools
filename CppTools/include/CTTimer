@@ -1,0 +1,7 @@
+#pragma once
+#ifndef CTTIME_BASE
+#define CTTIME_BASE
+
+#include <core\CTTimer.h>
+
+#endif
