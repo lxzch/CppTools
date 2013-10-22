@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CtCore", "CtCore\CtCore.vcproj", "{2C4C1F64-7D65-4BAB-AF8F-E38DB4DE5849}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CtCoreExc", "CtCoreExc\CtCoreExc.vcproj", "{495730CA-6EBD-4005-B64E-DA08BD3C9D77}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2C4C1F64-7D65-4BAB-AF8F-E38DB4DE5849}.Debug|Win32.ActiveCfg = Debug|Win32
+		{2C4C1F64-7D65-4BAB-AF8F-E38DB4DE5849}.Debug|Win32.Build.0 = Debug|Win32
+		{2C4C1F64-7D65-4BAB-AF8F-E38DB4DE5849}.Release|Win32.ActiveCfg = Release|Win32
+		{2C4C1F64-7D65-4BAB-AF8F-E38DB4DE5849}.Release|Win32.Build.0 = Release|Win32
+		{495730CA-6EBD-4005-B64E-DA08BD3C9D77}.Debug|Win32.ActiveCfg = Debug|Win32
+		{495730CA-6EBD-4005-B64E-DA08BD3C9D77}.Debug|Win32.Build.0 = Debug|Win32
+		{495730CA-6EBD-4005-B64E-DA08BD3C9D77}.Release|Win32.ActiveCfg = Release|Win32
+		{495730CA-6EBD-4005-B64E-DA08BD3C9D77}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
